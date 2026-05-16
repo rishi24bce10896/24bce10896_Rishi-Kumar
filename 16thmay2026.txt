@@ -1,0 +1,26 @@
+show databases;
+create database VITCampus;
+use VITCampus;
+create table CSE(
+sid int8,
+sname varchar(50),
+smarks int1
+);
+create table MEE(
+sid int8,
+sname varchar(50),
+smarks int1
+);
+create table Mech(
+sid int8,
+sname varchar(50),
+smarks int1
+);
+show tables from VITCampus;
+select * from cse;
+insert into cse (sid,sname,smarks) VALUES
+(1, 'Arya', 100),
+(2, 'Shreya', 99),
+(3, 'Yash', 98),
+(4, 'Dev', 97),
+(5, 'Rahul', 96);
