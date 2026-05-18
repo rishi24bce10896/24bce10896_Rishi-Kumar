@@ -1,0 +1,125 @@
+show databases;
+
+create database VITCampus1;
+
+drop database VITCampus1;
+
+use VITCampus;
+
+create table CSE(
+sid int8,
+sname varchar(50),
+smarks int1
+);
+show tables from vitcampus;
+insert into cse values (100,'Rishi',90);
+SELECT * FROM CSE;
+ALTER TABLE CSE
+ADD sphone int8,
+ADD sphone2 int8;
+
+desc cse;
+
+
+ALTER TABLE cse
+ADD sdept VARCHAR(20),
+ADD sCountry VARCHAR(30);
+
+INSERT INTO CSE
+VALUES (
+    106,
+    'Semi',
+    95,
+    9876543210,
+    9123456780,
+    'CSE',
+    'SriLanka'
+);
+SELECT * FROM CSE;
+ALTER TABLE CSE
+DROP COLUMN sphone2;
+DESC CSE;
+ALTER TABLE CSE
+RENAME COLUMN sCountry TO SLocation;
+DESC CSE;
+drop table cse;
+
+desc cse;
+
+show tables from vitcampus;
+
+CREATE TABLE eee(
+    eid INT,
+    ename VARCHAR(50)
+);
+
+delete from eee;
+
+select * from eee;
+
+RENAME TABLE eee to ECE;
+
+CREATE TABLE Worker (
+	WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	FIRST_NAME CHAR(25),
+	LAST_NAME CHAR(25),
+	SALARY INT(15),
+	JOINING_DATE DATETIME,
+	DEPARTMENT CHAR(25)
+);
+
+INSERT INTO Worker 
+	(WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES
+		(001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'),
+		(002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'),
+		(003, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'),
+		(004, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'),
+		(005, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'),
+		(006, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'),
+		(007, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'),
+		(008, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
+        
+select * from worker;
+
+UPDATE worker SET First_name='Jayanth', Last_name='V' WHERE worker_id=1;
+UPDATE worker SET salary = salary+5000; 
+DELETE FROM worker WHERE worker_id=8;
+
+start transaction;
+create table emp (id int);
+insert into emp values (102);
+select * from emp
+savepoint time15;
+insert into emp values (103);
+savepoint time16;
+insert into emp values (104);
+savepoint time17;
+
+rollback to time16;
+insert into emp values (105);
+savepoint time18;
+rollback to time16;
+
+select * from worker;
+select first_name,department FROM worker 
+where salary>100000;
+
+select first_name,department FROM worker 
+where salary=80000;
+
+SELECT FIRST_NAME, SALARY
+FROM worker
+WHERE SALARY < 100000;
+
+SELECT FIRST_NAME, SALARY
+FROM worker
+WHERE SALARY >= 200000;
+
+SELECT FIRST_NAME, SALARY
+FROM worker
+WHERE SALARY <= 90000;
+
+SELECT FIRST_NAME, DEPARTMENT
+FROM worker
+WHERE DEPARTMENT != 'HR';
+
