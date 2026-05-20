@@ -1,0 +1,68 @@
+create table persons (
+	ID int not null,
+    Lastname varchar(255) not null,
+    Firstname varchar(255) not null,
+    age int
+    
+);
+desc persons;
+
+select * from persons;
+insert into persons values (1,'Rishi','Kumar',20);
+
+ALTER TABLE persons
+ADD UNIQUE (Age);
+
+ALTER TABLE persons
+DROP INDEX AGE;
+DROP Table persons;
+
+create table persons (
+	ID int not null,
+    Lastname varchar(255) not null,
+    Firstname varchar(255) not null,
+    age int
+    CHECK (age>=18)
+    
+);
+desc persons;
+
+create table products(
+pid int primary key,
+pname varchar(100) not null,
+prefNo int not null unique
+);
+desc products;
+
+insert into products values (102,'furniture',19930);
+
+alter table persons
+add primary key (ID);
+
+desc persons;
+
+alter table persons
+drop primary key;
+
+desc persons;
+
+drop table products;
+create table category(
+cid int primary key,
+cname varchar(100) not null
+);
+desc category;
+select * from category;
+
+insert into category values(101,'electronics');
+select * from category;
+
+create table products (
+	pid int primary key,
+	pname varchar(100) not null,
+	cid int,
+	foreign key (cid) references category(cid)
+);
+desc products;
+
+insert into category values(101,'electronics');
