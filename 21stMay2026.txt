@@ -1,0 +1,116 @@
+select * from category;
+delete from category where cid=101;
+drop table products;
+
+create table products (
+	pid int primary key,
+	pname varchar(100) not null,
+	cid int,
+	foreign key (cid) references category(cid) ON DELETE CASCADE
+);
+desc products;
+select * from category;
+delete from category where cid=101;
+
+DROP TABLE products;
+DROP TABLE category;
+
+CREATE TABLE category(
+    cid INT PRIMARY KEY,
+    cname VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE products(
+    pid INT PRIMARY KEY,
+    pname VARCHAR(100) NOT NULL,
+    cid INT,
+    
+    FOREIGN KEY (cid)
+    REFERENCES category(cid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+DESC products;
+
+INSERT INTO category VALUES(101,'Electronics'),(102,'Home App');
+
+INSERT INTO products VALUES(1,'Laptop',101), (2,'Mobile',101), (3,'Mixer',102);
+
+SELECT * FROM category;
+
+SELECT * FROM products;
+UPDATE category
+SET cid = 201
+WHERE cid = 101;
+
+select * from worker;
+select first_name,department, salary from worker where department='admin';
+select first_name,department, salary from worker where department='admin' order by salary asc;
+select first_name,department, salary from worker where department='admin' order by salary desc;
+
+#Groupby
+select count(worker_id) from worker where department='admin' or department='hr';
+select department, count(department) from worker
+group by department order by department asc;
+
+CREATE TABLE Student(
+    sid INT PRIMARY KEY,
+    sname VARCHAR(50),
+    department VARCHAR(30),
+    marks INT
+);
+
+INSERT INTO Student
+VALUES
+(101,'Rishi','CSE',85),
+(102,'Aman','ECE',72),
+(103,'Rahul','CSE',91),
+(104,'Sneha','EEE',67),
+(105,'Priya','ECE',88),
+(106,'Karan','CSE',75);
+
+SELECT * FROM Student;
+select sname, department, marks from student order by marks asc;
+select sname, department, marks from student order by marks desc;
+select * from student;
+select * from student order by sname asc;
+select * from student order by sname desc;
+
+#i want to calculate for hr department for what is the total salary i am spending
+select department, sum(salary) from worker where department='hr' group by department;
+
+select department, count(department) from worker
+group by department having count(department)>=3 order by department;
+
+select * from worker limit 1 offset 3;
+
+create table toppers(
+	id int primary key
+);
+
+insert into toppers values(1),(3),(5);
+select * from toppers;
+
+select worker_id, department, first_name from worker
+where worker_id in (select id from toppers);
+
+#there are 3 departments, i want to print which department is getting less salary i.e. the first two least getting salary
+select department, sum(salary) from worker
+group by department
+order by sum(salary) limit 2;
+
+#in admin department, who is getting the second largest salary?
+select first_name, department, salary from worker
+where department='admin' order by salary desc limit 1 offset 1;
+
+#in each department i want to print the second largest salary person.
+select first_name, department, salary
+from worker w1
+where salary = (
+    select distinct salary
+    from worker w2
+    where w1.department = w2.department
+    order by salary desc
+    limit 1 offset 1
+);
