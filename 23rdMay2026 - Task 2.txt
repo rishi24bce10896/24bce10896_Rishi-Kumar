@@ -1,0 +1,117 @@
+SQL Questions
+1.
+List the Employee Name, their Department Name, and the Location Name for all employees.
+Ans. select e.employee_name, d.dept_name, d.location_id from employees e
+join departments d on e.dept_id = d.dept_id;
+________________________________________
+2.
+Retrieve the Project Name, Client Name, and the Total Hours Worked on that project, but only for projects managed by the 'Consulting' department.
+Ans. select p.project_name, p.client_name, sum(a.hours_worked) from projects p
+join assignments a on p.project_id = a.project_id
+join departments d on p.dept_id = d.dept_id
+where d.dept_name = 'consulting'
+group by p.project_name, p.client_name;
+________________________________________
+3.
+Find the names of Employees who have worked on a project with Client Name 'GlobalTech Solutions'. List the Employee Name and Project Name.
+Ans. select e.employee_name, p.project_name from employees e
+join assignments a on e.employee_id = a.employee_id
+join projects p on a.project_id = p.project_id
+where p.client_name = 'globaltech solutions';
+________________________________________
+4.
+List all Departments that have no Employees currently assigned to them.
+Ans. select d.dept_name from departments d
+left join employees e on d.dept_id = e.dept_id
+where e.employee_id is null;
+________________________________________
+5.
+Show the Manager Name, the Department Name they manage, and the total number of direct reports they have.
+Ans. select m.employee_name, d.dept_name, count(e.employee_id) from employees e
+join employees m on e.manager_id = m.employee_id
+join departments d on m.dept_id = d.dept_id
+group by m.employee_name, d.dept_name;
+________________________________________
+Aggregation and Grouping
+6.
+Calculate the Average Hours Worked per Employee across all projects. List the Employee Name and the average hours.
+Ans. select e.employee_name, avg(a.hours_worked) from employees e
+join assignments a on e.employee_id = a.employee_id
+group by e.employee_name;
+________________________________________
+7.
+Find the Department Name(s) that have an average salary above the company-wide average salary.
+Ans. select d.dept_name from employees e
+join departments d on e.dept_id = d.dept_id
+group by d.dept_name
+having avg(e.salary) >
+(
+    select avg(salary)
+    from employees
+);
+________________________________________
+8.
+Identify the Client Name(s) whose projects have a total combined hours worked exceeding 500 hours.
+Ans. select p.client_name, sum(a.hours_worked) from projects p
+join assignments a on p.project_id = a.project_id
+group by p.client_name
+having sum(a.hours_worked) > 500;
+________________________________________
+10.
+Calculate the total number of employees assigned to each Project, but only include projects that have more than 5 employees assigned.
+select p.project_name, count(a.employee_id) from projects p
+join assignments a on p.project_id = a.project_id
+group by p.project_name
+having count(a.employee_id) > 5;
+________________________________________
+Advanced Filtering
+12.
+Retrieve the Department Name(s) that have employees assigned to more than one project.
+Ans. select d.dept_name from departments d
+join employees e on d.dept_id = e.dept_id
+join assignments a on e.employee_id = a.employee_id
+group by d.dept_name
+having count(distinct a.project_id) > 1;
+________________________________________
+13.
+Write a query to list the Employee Name and Project Name for any employee who has worked less than 10 hours on a project.
+Ans. select e.employee_name, p.project_name from employees e
+join assignments a on e.employee_id = a.employee_id
+join projects p on a.project_id = p.project_id
+where a.hours_worked < 10;
+________________________________________
+14.
+Find the Project Name(s) that have no assigned employees.
+select p.project_name from projects p
+left join assignments a on p.project_id = a.project_id
+where a.assignment_id is null;
+________________________________________
+Dates and MySQL Specific Functions
+16.
+Assuming the Assignments table has a start_date column, find the Employee Name and their oldest project start date.
+Ans. select e.employee_name, min(a.start_date) from employees e
+join assignments a on e.employee_id = a.employee_id
+group by e.employee_name;
+________________________________________
+17.
+Write a MySQL query using the DATE_FORMAT function to list all projects that were active in the year 2023.
+Ans. select project_name from projects
+where date_format(start_date, '%Y') = '2023';
+________________________________________
+19.
+Find the top 3 Departments based on the total hours worked by all their employees across all projects.
+Ans. select d.dept_name, sum(a.hours_worked) from departments d
+join employees e on d.dept_id = e.dept_id
+join assignments a on e.employee_id = a.employee_id
+group by d.dept_name
+order by sum(a.hours_worked) desc
+limit 3;
+________________________________________
+Complex Scenarios and Performance
+21.
+List the Employee Name and their Manager's Name, even if the employee has no manager, or if a potential manager has no employees reporting to them.
+Ans. select e.employee_name, m.employee_name from employees e
+left join employees m
+on e.manager_id = m.employee_id;
+________________________________________
+
