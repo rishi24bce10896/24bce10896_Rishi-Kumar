@@ -1,0 +1,42 @@
+show dbs
+
+use vit
+
+db
+
+db.createCollection("employee")
+
+show collections
+
+db.employee.drop()
+
+db.createCollection("employee")
+
+db.employee.insert({name:'xyz',deartment:'CSE'})
+
+db.employee.insert({name:'abc',deartment:'CSE',location:'delhi'})
+
+db.employee.find()
+
+db.employee.insertMany([
+   {
+      name: "harshit",
+      age: 20,
+      course: "CSE"
+   },
+   {
+      name: "Rahul",
+      age: 21,
+      course: "IT"
+   },
+   {
+      name: "Priya",
+      age: 19,
+      course: "ECE"
+   },
+   {
+      name: "Aman",
+      age: 22,
+      course: "ME"
+   }
+])
