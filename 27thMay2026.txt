@@ -1,0 +1,145 @@
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+
+// 1. INITIALIZATION: INSERTING MOCK DATA
+db.products.insertMany([
+  { 
+    "_id" : 1, 
+    "name": "xPhone", 
+    "price": 799,
+    "releaseDate": ISODate("2011-05-14"), 
+    "spec": { "ram" : 4, "screen": 6.5, "cpu": 2.66 },
+    "color":["white", "black"], 
+    "storage" : [64, 128, 256]
+  },
+  {
+    "_id": 2, 
+    "name": "xTablet", 
+    "price": 899,
+    "releaseDate": ISODate("2011-09-01"), 
+    "spec": { "ram": 16, "screen": 9.5, "cpu": 3.66 },
+    "color":["white", "black", "purple"], 
+    "storage" : [128, 256, 512]
+  },
+  {
+    "_id": 3, 
+    "name": "SmartTablet", 
+    "price": 899,
+    "releaseDate": ISODate("2015-01-14"), 
+    "spec": { "ram": 12, "screen": 9.7, "cpu": 3.66 },
+    "color": ["blue"], 
+    "storage" : [16, 64, 128]
+  },
+  {
+    "_id": 4, 
+    "name": "SmartPad", 
+    "price" : 699,
+    "releaseDate": ISODate("2020-05-14"), 
+    "spec": { "ram": 8, "screen": 9.7, "cpu": 1.66 },
+    "color":["white", "orange", "gold", "gray"], 
+    "storage": [128, 256, 1024]
+  },
+  {
+    "_id": 5, 
+    "name": "SmartPhone", 
+    "price": 599, 
+    "releaseDate": ISODate("2022-09-14"), 
+    "spec": { "ram": 4, "screen": 9.7, "cpu": 1.66 },
+    "color":["white", "orange", "gold", "gray"], 
+    "storage": [128, 256]
+  }
+]);
+
+// 2. EXAMPLE 1: CHECK IF A FIELD EQUALS A SPECIFIED VALUE
+db.products.find({ price: { $eq: 899 } }, { name: 1, price: 1 });
+db.products.find({ price: 899 }, { name: 1, price: 1 });
+
+// 3. EXAMPLE 2: CHECK IF A FIELD IN AN EMBEDDED DOCUMENT EQUALS A VALUE
+db.products.find({ "spec.ram": { $eq: 4 } }, { name: 1, "spec.ram": 1 });
+db.products.find({ "spec.ram": 4 }, { name: 1, "spec.ram": 1 });
+
+// 4. EXAMPLE 3: CHECK IF AN ARRAY ELEMENT EQUALS A VALUE
+db.products.find({ color: { $eq: "black" } }, { name: 1, color: 1 });
+db.products.find({ color: "black" }, { name: 1, color: 1 });
+
+// 5. EXAMPLE 4: CHECK IF A FIELD EQUALS A DATE
+db.products.find({ releaseDate: { $eq: new ISODate("2020-05-14") } }, { name: 1, releaseDate: 1 });
+
+// 1. INITIALIZATION: INSERTING MOCK DATA
+db.products.insertMany([
+	{ "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate" : ISODate("2011-05-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 }, "color" : [ "white", "black" ], "storage" : [ 64, 128, 256 ] },
+	{ "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate" : ISODate("2011-09-01T00:00:00Z"), "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 }, "color" : [ "white", "black", "purple" ], "storage" : [ 128, 256, 512 ] },
+	{ "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate" : ISODate("2015-01-14T00:00:00Z"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "blue" ], "storage" : [ 16, 64, 128 ] },
+	{ "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate" : ISODate("2020-05-14T00:00:00Z"), "spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256, 1024 ] },
+	{ "_id" : 5, "name" : "SmartPhone", "price" : 599, "releaseDate" : ISODate("2022-09-14T00:00:00Z"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 }, "color" : [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256 ] },
+	{ "_id" : 6, "name" : "xWidget", "spec" : { "ram" : 64, "screen" : 9.7, "cpu" : 3.66 }, "color" : [ "black" ], "storage" : [ 1024 ] }
+]);
+
+// 2. EXAMPLE 1: USING EXPLICIT $and OPERATOR FOR MULTIPLE FIELDS
+db.products.find({ $and: [ { price: 899 }, { color: { $in: ["white", "black"] } } ] }, { name: 1, price: 1, color: 1 });
+
+// 3. EXAMPLE 2: USING EXPLICIT $and OPERATOR WITH THE SAME FIELD
+db.products.find({ $and: [ { price: 699 }, { price: { $exists: true } } ] }, { name: 1, price: 1, color: 1 });
+
+// 4. EXAMPLE 3: USING IMPLICIT AND OPERATOR SHORTCUT
+db.products.find({ price: { $eq: 699, $exists: true } }, { name: 1, price: 1, color: 1 });
+
+
+// 1. INITIALIZATION: INSERTING MOCK DATA
+db.products.insertMany([
+  { "_id" : 1, "name": "xPhone", "price": 799, "releaseDate" : ISODate("2011-05-14T00:00:00Z"), "spec": { "ram": 4, "screen": 6.5, "cpu": 2.66 }, "color": [ "white", "black" ], "storage" : [ 64, 128, 256 ] },
+  { "_id" : 2, "name": "xTablet", "price": 899, "releaseDate" : ISODate("2011-09-01T00:00:00Z"), "spec": { "ram": 16, "screen": 9.5, "cpu": 3.66 }, "color": [ "white", "black", "purple" ], "storage" : [ 128, 256, 512 ] },
+  { "_id" : 3, "name": "SmartTablet", "price": 899, "releaseDate" : ISODate("2015-01-14T00:00:00Z"), "spec" : { "ram": 12, "screen": 9.7, "cpu": 3.66 }, "color": [ "blue" ], "storage" : [ 16, 64, 128 ] },
+  { "_id" : 4, "name": "SmartPad", "price" : 699, "releaseDate" : ISODate("2020-05-14T00:00:00Z"), "spec": { "ram" : 8, "screen" : 9.7, "cpu": 1.66 }, "color": [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256, 1024 ] },
+  { "_id" : 5, "name": "SmartPhone", "price": 599, "releaseDate" : ISODate("2022-09-14T00:00:00Z"), "spec": { "ram": 4, "screen": 9.7, "cpu": 1.66 }, "color": [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256 ] },
+  { "_id" : 6, "name": "xWidget", "spec": { "ram": 64, "screen": 9.7, "cpu": 3.66 }, "color": [ "black" ], "storage" : [ 1024 ] }
+]);
+
+// 2. $or EXAMPLE 1: MATCH SEVERAL SPECIFIC VALUES ON A SINGLE FIELD
+db.products.find({ $or: [ { price: 799 }, { price: 899 } ] }, { name: 1, price: 1 });
+
+// 3. $or EXAMPLE 1 ALTERNATIVE: REFACTORING TO USE $in FOR THE SAME FIELD
+db.products.find({ price: { $in: [799, 899] } }, { name: 1, price: 1 });
+
+// 4. $or EXAMPLE 2: SELECTING DOCUMENTS WITHIN A RANGE CONTEXT
+db.products.find({ $or: [ { price: { $lt: 699 } }, { price: { $gt: 799 } } ] }, { name: 1, price: 1 });
+
+// 5. $not EXAMPLE 1: MATCH FIELDS NOT GREATER THAN A VALUE (INCLUDES MISSING FIELD)
+db.products.find({ price: { $not: { $gt: 699 } } }, { name: 1, price: 1 });
+
+// 6. $not EXAMPLE 1 COMPARISON: USING $lte OPERATOR (EXCLUDES MISSING FIELD)
+db.products.find({ price: { $lte: 699 } }, { name: 1, price: 1 });
+
+// 7. $not EXAMPLE 2: FILTERING OUT DOCUMENTS MATCHING A REGULAR EXPRESSION
+db.products.find({ name: { $not: /^Smart+/ } }, { name: 1 });
+
+
+// 1. INITIALIZATION: INSERTING MOCK DATA
+db.products.insertMany([
+  { "_id" : 1, "name" : "xPhone", "price": 799, "releaseDate": ISODate("2011-05-14T00:00:00Z"), "spec": { "ram": 4, "screen" : 6.5, "cpu": 2.66 }, "color": [ "white", "black" ], "storage" : [ 64, 128, 256 ] },
+  { "_id": 2, "name": "xTablet", "price": 899, "releaseDate" : ISODate("2011-09-01T00:00:00Z"), "spec": { "ram" : 16, "screen" : 9.5, "cpu": 3.66 }, "color": [ "white", "black", "purple" ], "storage" : [ 128, 256, 512 ] },
+  { "_id": 3, "name": "SmartTablet", "price" : 899, "releaseDate" : ISODate("2015-01-14T00:00:00Z"), "spec" : { "ram": 12, "screen": 9.7, "cpu": 3.66 }, "color": [ "blue" ], "storage": [ 16, 64, 128 ] },
+  { "_id": 4, "name": "SmartPad", "price": 699, "releaseDate" : ISODate("2020-05-14T00:00:00Z"), "spec" : { "ram": 8, "screen": 9.7, "cpu": 1.66 }, "color": [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256, 1024 ] },
+  { "_id": 5, "name": "SmartPhone", "price": 599, "releaseDate": ISODate("2022-09-14T00:00:00Z"), "spec": { "ram": 4, "screen": 9.7, "cpu": 1.66 }, "color": [ "white", "orange", "gold", "gray" ], "storage" : [ 128, 256 ] },
+  { "_id": 6, "name": "xWidget", "spec": { "ram": 64, "screen": 9.7, "cpu": 3.66 }, "color": [ "black" ], "storage" : [ 1024 ] }
+]);
+
+// 2. USING MONGODB $nor OPERATOR EXAMPLE
+db.products.find(
+  {
+    $nor: [
+      { price: 899 },
+      { color: "gold" }
+    ]
+  },
+  {
+    name: 1,
+    price: 1,
+    color: 1
+  }
+);
