@@ -1,0 +1,233 @@
+EXAMPLE 1:
+db.products.updateOne(
+    { _id: 5 },
+    { $mul: { price: 1.1 } }
+)
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+EXAMPLE 2:
+db.products.updateOne(
+    { _id: 1 },
+    { $mul: {
+        "storage.0": 2,
+        "storage.1": 2,
+        "storage.2": 2
+    }}
+)
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+EXAMPLE 3:
+db.products.updateMany({}, {
+    $mul: { "spec.ram": 2 }
+})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 7,
+  upsertedCount: 0
+}
+
+UNSET operator:
+
+EXAMPLE 1:
+db.products.updateOne(
+    { _id: 1 },
+    { $unset: { price: "" } }
+)
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+EXAMPLE 2:
+db.products.updateMany({}, {
+    $unset: { "spec.ram": "" }
+})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 7,
+  upsertedCount: 0
+}
+
+EXAMPLE 3:
+db.products.updateMany({}, {
+    $unset: { "storage.0": "" }
+})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 7,
+  upsertedCount: 0
+}
+
+EXAMPLE 4:
+db.products.updateMany({}, {
+    $unset: {
+        releaseDate: "",
+        spec: ""
+    }
+})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 7,
+  upsertedCount: 0
+}
+
+$rename Operator
+EXAMPLE 1:
+db.products.updateMany({}, {
+    $rename: { nmea: "name" }
+})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+
+EXAMPLE 2:
+db.products.updateMany({}, {
+    $rename: { "spec.screen": "spec.screenSize" }
+})
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 7,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+
+EXAMPLE 3:
+db.products.updateOne(
+    { _id: 1 },
+    { $rename: { "spec.cpu": "cpu" } }
+)
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+
+EXAMPLE 4:
+db.products.updateOne(
+    { _id: 2 },
+    { $rename: { color: "storage" } }
+)
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+upsert operator:
+db.products.updateMany(
+    { _id: 6 },
+    { $set: { price: 999 } }
+)
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+db.products.updateMany(
+    { _id: 6 },
+    { $set: { price: 999 } },
+    { upsert: true }
+)
+
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+
+db.products.find({ _id: 6 })
+{
+  _id: 6,
+  name: 'xWidget',
+  color: [
+    'black'
+  ],
+  storage: [
+    null
+  ],
+  price: 999
+}
+
+delete operator: deleteOne
+EXAMPLE 1:
+db.products.deleteOne({ _id: 1 })
+
+{
+  acknowledged: true,
+  deletedCount: 1
+}
+
+EXAMPLE 2:
+db.products.deleteOne({})
+
+{
+  acknowledged: true,
+  deletedCount: 1
+}
+
+deleteMany() — delete multiple documents
+
+EXAMPLE 1:
+db.products.deleteMany({ price: 899 })
+
+{
+  acknowledged: true,
+  deletedCount: 2
+}
+
+EXAMPLE 2:
+db.products.deleteMany({})
+
+{
+  acknowledged: true,
+  deletedCount: 5
+}
