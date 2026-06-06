@@ -1,0 +1,849 @@
+db.sales.getIndexes()
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+
+db.sales.getIndexes([
+ {
+   v:2,
+   key:{ _id:1 },
+   name:"_id_"
+ }
+])
+
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+
+db.sales.getIndexes({title:1})
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+
+db.sales.find({
+   item:"Americanos"
+})
+{
+  _id: 1,
+  item: 'Americanos',
+  price: 5,
+  size: 'Short',
+  quantity: 22,
+  date: 2022-01-15T08:00:00.000Z
+}{
+  _id: 5,
+  item: 'Americanos',
+  price: 10,
+  size: 'Grande',
+  quantity: 12,
+  date: 2022-02-18T21:06:00.000Z
+}
+{
+  _id: 8,
+  item: 'Americanos',
+  price: 10,
+  size: 'Grande',
+  quantity: 21,
+  date: 2022-02-22T14:09:00.000Z
+}
+
+  _id: 10,
+  item: 'Americanos',
+  price: 8,
+  size: 'Tall',
+  quantity: 15,
+  date: 2022-02-25T14:09:00.000Z
+}
+
+db.sales.find({
+   item:"Americanos"
+}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Vitcampus.sales',
+    parsedQuery: {
+      item: {
+        '$eq': 'Americanos'
+      }
+    },
+    indexFilterSet: false,
+    queryHash: '54D41B5B',
+    planCacheShapeHash: '54D41B5B',
+    planCacheKey: '133B5F95',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: {
+        item: {
+          '$eq': 'Americanos'
+        }
+      },
+      nss: 'Vitcampus.sales',
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 4,
+    executionTimeMillis: 3,
+    totalKeysExamined: 0,
+    totalDocsExamined: 10,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: {
+        item: {
+          '$eq': 'Americanos'
+        }
+      },
+      nReturned: 4,
+      executionTimeMillisEstimate: 0,
+      works: 11,
+      advanced: 4,
+      needTime: 6,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      nss: 'Vitcampus.sales',
+      direction: 'forward',
+      docsExamined: 10
+    }
+  },
+  queryShapeHash: '6240B3D70E9934F45B9E14D6A8E8C3999EEB06C64909A21019ECB8D80E204DFD',
+  command: {
+    find: 'sales',
+    filter: {
+      item: 'Americanos'
+    },
+    '$db': 'Vitcampus'
+  },
+  serverInfo: {
+    host: 'Rishi',
+    port: 27017,
+    version: '8.3.2',
+    gitVersion: '89f54eb32e217d2f7bfcad50e5919f3033bb9611'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+
+db.sales.createIndex({
+   item:1
+})
+item_1
+
+db.sales.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { item: 1 }, name: 'item_1' }
+]
+
+db.sales.find({
+   item:"Americanos"
+}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Vitcampus.sales',
+    parsedQuery: {
+      item: {
+        '$eq': 'Americanos'
+      }
+    },
+    indexFilterSet: false,
+    queryHash: '54D41B5B',
+    planCacheShapeHash: '54D41B5B',
+    planCacheKey: '8668F288',
+    optimizationTimeMillis: 4,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      nss: 'Vitcampus.sales',
+      inputStage: {
+        stage: 'IXSCAN',
+        nss: 'Vitcampus.sales',
+        keyPattern: {
+          item: 1
+        },
+        indexName: 'item_1',
+        isMultiKey: false,
+        multiKeyPaths: {
+          item: []
+        },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: {
+          item: [
+            '["Americanos", "Americanos"]'
+          ]
+        }
+      }
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 4,
+    executionTimeMillis: 26,
+    totalKeysExamined: 4,
+    totalDocsExamined: 4,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 4,
+      executionTimeMillisEstimate: 25,
+      works: 5,
+      advanced: 4,
+      needTime: 0,
+      needYield: 0,
+      saveState: 1,
+      restoreState: 1,
+      isEOF: 1,
+      nss: 'Vitcampus.sales',
+      docsExamined: 4,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 4,
+        executionTimeMillisEstimate: 25,
+        works: 5,
+        advanced: 4,
+        needTime: 0,
+        needYield: 0,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        nss: 'Vitcampus.sales',
+        keyPattern: {
+          item: 1
+        },
+        indexName: 'item_1',
+        isMultiKey: false,
+        multiKeyPaths: {
+          item: []
+        },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: {
+          item: [
+            '["Americanos", "Americanos"]'
+          ]
+        },
+        keysExamined: 4,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0,
+        peakTrackedMemBytes: 0
+      }
+    }
+  },
+  queryShapeHash: '6240B3D70E9934F45B9E14D6A8E8C3999EEB06C64909A21019ECB8D80E204DFD',
+  command: {
+    find: 'sales',
+    filter: {
+      item: 'Americanos'
+    },
+    '$db': 'Vitcampus'
+  },
+  serverInfo: {
+    host: 'Rishi',
+    port: 27017,
+    version: '8.3.2',
+    gitVersion: '89f54eb32e217d2f7bfcad50e5919f3033bb9611'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+
+db.users.createIndex(
+   { email:1 },
+   { unique:true }
+)
+email_1
+
+db.users.insertOne({
+   email:"alex@test.com",
+   name:"alex"
+})
+db.users.insertOne({
+   email:"alex@test.com",
+   name:"alex"
+})
+
+db.users.insertOne({
+   email:"john@test.com",
+   name:"johny"
+})
+E11000 duplicate key error collection: Vitcampus.users index: email_1 dup key: { email: "john@test.com" }
+
+
+db.users.insertMany([
+   { email: "john@test.com", name: "john" },
+   { email: "john@test.com", name: "johny" },
+   { email: "jane@test.com", name: "jane" }
+]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6a2421c6807d5bf080f5427f'),
+    '1': ObjectId('6a2421c6807d5bf080f54280'),
+    '2': ObjectId('6a2421c6807d5bf080f54281')
+  }
+}
+
+db.users.createIndex(
+   { email: 1 },
+   { unique: true }
+)
+Index build failed: 3708f2f1-3295-4284-b48d-82b9088e78dc: Collection Vitcampus.users ( 46bce663-cbc5-4776-b0e2-6
+
+db.users.deleteOne({
+   name: "johny",
+   email: "john@test.com"
+});
+{
+  acknowledged: true,
+  deletedCount: 1
+}
+
+COUMPOUND INDEX
+db.sales.createIndex({
+   item: 1,
+   size: 1
+})
+item_1_size_1
+
+db.sales.find({
+   item: "Americanos",
+   size: "Grande"
+}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Vitcampus.sales',
+    parsedQuery: {
+      '$and': [
+        {
+          item: {
+            '$eq': 'Americanos'
+          }
+        },
+        {
+          size: {
+            '$eq': 'Grande'
+          }
+        }
+      ]
+    },
+    indexFilterSet: false,
+    queryHash: '84A716AC',
+    planCacheShapeHash: '84A716AC',
+    planCacheKey: '2739E6BD',
+    optimizationTimeMillis: 7,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      nss: 'Vitcampus.sales',
+      inputStage: {
+        stage: 'IXSCAN',
+        nss: 'Vitcampus.sales',
+        keyPattern: {
+          item: 1,
+          size: 1
+        },
+        indexName: 'item_1_size_1',
+        isMultiKey: false,
+        multiKeyPaths: {
+          item: [],
+          size: []
+        },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: {
+          item: [
+            '["Americanos", "Americanos"]'
+          ],
+          size: [
+            '["Grande", "Grande"]'
+          ]
+        }
+      }
+    },
+    rejectedPlans: [
+      {
+        isCached: false,
+        stage: 'FETCH',
+        filter: {
+          size: {
+            '$eq': 'Grande'
+          }
+        },
+        nss: 'Vitcampus.sales',
+        inputStage: {
+          stage: 'IXSCAN',
+          nss: 'Vitcampus.sales',
+          keyPattern: {
+            item: 1
+          },
+          indexName: 'item_1',
+          isMultiKey: false,
+          multiKeyPaths: {
+            item: []
+          },
+          isUnique: false,
+          isSparse: false,
+          isPartial: false,
+          indexVersion: 2,
+          direction: 'forward',
+          indexBounds: {
+            item: [
+              '["Americanos", "Americanos"]'
+            ]
+          }
+        }
+      }
+    ]
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 2,
+    executionTimeMillis: 7,
+    totalKeysExamined: 2,
+    totalDocsExamined: 2,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 2,
+      executionTimeMillisEstimate: 0,
+      works: 4,
+      advanced: 2,
+      needTime: 0,
+      needYield: 0,
+      saveState: 1,
+      restoreState: 1,
+      isEOF: 1,
+      nss: 'Vitcampus.sales',
+      docsExamined: 2,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 2,
+        executionTimeMillisEstimate: 0,
+        works: 3,
+        advanced: 2,
+        needTime: 0,
+        needYield: 0,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        nss: 'Vitcampus.sales',
+        keyPattern: {
+          item: 1,
+          size: 1
+        },
+        indexName: 'item_1_size_1',
+        isMultiKey: false,
+        multiKeyPaths: {
+          item: [],
+          size: []
+        },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: {
+          item: [
+            '["Americanos", "Americanos"]'
+          ],
+          size: [
+            '["Grande", "Grande"]'
+          ]
+        },
+        keysExamined: 2,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0,
+        peakTrackedMemBytes: 0
+      }
+    }
+  },
+  queryShapeHash: '9E7FBBF26C6EEA1256FBABF554366760844FE7C01D07F44B16F36D7D5A403B9F',
+  command: {
+    find: 'sales',
+    filter: {
+      item: 'Americanos',
+      size: 'Grande'
+    },
+    '$db': 'Vitcampus'
+  },
+  serverInfo: {
+    host: 'Rishi',
+    port: 27017,
+    version: '8.3.2',
+    gitVersion: '89f54eb32e217d2f7bfcad50e5919f3033bb9611'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+
+db.sales.find({
+   item: "Americanos"
+}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Vitcampus.sales',
+    parsedQuery: {
+      item: {
+        '$eq': 'Americanos'
+      }
+    },
+    indexFilterSet: false,
+    queryHash: '54D41B5B',
+    planCacheShapeHash: '54D41B5B',
+    planCacheKey: 'C0BF8066',
+    optimizationTimeMillis: 1,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'FETCH',
+      nss: 'Vitcampus.sales',
+      inputStage: {
+        stage: 'IXSCAN',
+        nss: 'Vitcampus.sales',
+        keyPattern: {
+          item: 1
+        },
+        indexName: 'item_1',
+        isMultiKey: false,
+        multiKeyPaths: {
+          item: []
+        },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: {
+          item: [
+            '["Americanos", "Americanos"]'
+          ]
+        }
+      }
+    },
+    rejectedPlans: [
+      {
+        isCached: false,
+        stage: 'FETCH',
+        nss: 'Vitcampus.sales',
+        inputStage: {
+          stage: 'IXSCAN',
+          nss: 'Vitcampus.sales',
+          keyPattern: {
+            item: 1,
+            size: 1
+          },
+          indexName: 'item_1_size_1',
+          isMultiKey: false,
+          multiKeyPaths: {
+            item: [],
+            size: []
+          },
+          isUnique: false,
+          isSparse: false,
+          isPartial: false,
+          indexVersion: 2,
+          direction: 'forward',
+          indexBounds: {
+            item: [
+              '["Americanos", "Americanos"]'
+            ],
+            size: [
+              '[MinKey, MaxKey]'
+            ]
+          }
+        }
+      }
+    ]
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 4,
+    executionTimeMillis: 1,
+    totalKeysExamined: 4,
+    totalDocsExamined: 4,
+    executionStages: {
+      isCached: false,
+      stage: 'FETCH',
+      nReturned: 4,
+      executionTimeMillisEstimate: 0,
+      works: 6,
+      advanced: 4,
+      needTime: 0,
+      needYield: 0,
+      saveState: 1,
+      restoreState: 1,
+      isEOF: 1,
+      nss: 'Vitcampus.sales',
+      docsExamined: 4,
+      alreadyHasObj: 0,
+      inputStage: {
+        stage: 'IXSCAN',
+        nReturned: 4,
+        executionTimeMillisEstimate: 0,
+        works: 5,
+        advanced: 4,
+        needTime: 0,
+        needYield: 0,
+        saveState: 1,
+        restoreState: 1,
+        isEOF: 1,
+        nss: 'Vitcampus.sales',
+        keyPattern: {
+          item: 1
+        },
+        indexName: 'item_1',
+        isMultiKey: false,
+        multiKeyPaths: {
+          item: []
+        },
+        isUnique: false,
+        isSparse: false,
+        isPartial: false,
+        indexVersion: 2,
+        direction: 'forward',
+        indexBounds: {
+          item: [
+            '["Americanos", "Americanos"]'
+          ]
+        },
+        keysExamined: 4,
+        seeks: 1,
+        dupsTested: 0,
+        dupsDropped: 0,
+        peakTrackedMemBytes: 0
+      }
+    }
+  },
+  queryShapeHash: '6240B3D70E9934F45B9E14D6A8E8C3999EEB06C64909A21019ECB8D80E204DFD',
+  command: {
+    find: 'sales',
+    filter: {
+      item: 'Americanos'
+    },
+    '$db': 'Vitcampus'
+  },
+  serverInfo: {
+    host: 'Rishi',
+    port: 27017,
+    version: '8.3.2',
+    gitVersion: '89f54eb32e217d2f7bfcad50e5919f3033bb9611'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+
+db.sales.find({
+   size: "Grande"
+}).explain("executionStats")
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'Vitcampus.sales',
+    parsedQuery: {
+      size: {
+        '$eq': 'Grande'
+      }
+    },
+    indexFilterSet: false,
+    queryHash: 'F70CC584',
+    planCacheShapeHash: 'F70CC584',
+    planCacheKey: '54082E81',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: {
+        size: {
+          '$eq': 'Grande'
+        }
+      },
+      nss: 'Vitcampus.sales',
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 4,
+    executionTimeMillis: 0,
+    totalKeysExamined: 0,
+    totalDocsExamined: 10,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: {
+        size: {
+          '$eq': 'Grande'
+        }
+      },
+      nReturned: 4,
+      executionTimeMillisEstimate: 0,
+      works: 11,
+      advanced: 4,
+      needTime: 6,
+      needYield: 0,
+      saveState: 0,
+      restoreState: 0,
+      isEOF: 1,
+      nss: 'Vitcampus.sales',
+      direction: 'forward',
+      docsExamined: 10
+    }
+  },
+  queryShapeHash: 'F3F86555C0E17DFBD70C419201F5E393E3844E879088BD87D1DFAB126E05B0BC',
+  command: {
+    find: 'sales',
+    filter: {
+      size: 'Grande'
+    },
+    '$db': 'Vitcampus'
+  },
+  serverInfo: {
+    host: 'Rishi',
+    port: 27017,
+    version: '8.3.2',
+    gitVersion: '89f54eb32e217d2f7bfcad50e5919f3033bb9611'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+
+DROP INDEX
+db.sales.createIndex({ item: 1 })
+item_1
+
+db.sales.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { item: 1 }, name: 'item_1' },
+  { v: 2, key: { item: 1, size: 1 }, name: 'item_1_size_1' }
+]
+
+db.sales.dropIndex("item_1")
+{ nIndexesWas: 3, ok: 1 }
+
+db.sales.createIndex({
+   quantity: -1
+})
+quantity_-1
+
+db.sales.dropIndex({
+   quantity: -1
+})
+{ nIndexesWas: 3, ok: 1 }
+
+db.sales.createIndex({ item: 1 })
+db.sales.createIndex({ quantity: 1 })
+quantity_1
+
+db.sales.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { item: 1, size: 1 }, name: 'item_1_size_1' },
+  { v: 2, key: { item: 1 }, name: 'item_1' },
+  { v: 2, key: { quantity: 1 }, name: 'quantity_1' }
+]
+
+db.sales.dropIndexes()
+{
+  nIndexesWas: 4,
+  msg: 'non-_id indexes dropped for collection',
+  ok: 1
+}
+
+db.sales.getIndexes()
+[ { v: 2, key: { _id: 1 }, name: '_id_' } ]
+
